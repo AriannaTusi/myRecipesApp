@@ -1,0 +1,155 @@
+<ion-header>
+  <ion-toolbar color="primary" mode="ios">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="ricetta">{{ricetta.nome}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding-horizontal="5px">
+  <div *ngIf="ricetta">
+    <span>
+      <ion-row>
+
+        <ion-col size = "10">
+          <ion-text align-self-center>
+            <h1><b>{{ricetta.nome}}</b></h1>
+          </ion-text>
+        </ion-col>
+
+        <ion-col>
+            <ion-icon *ngIf="preferita" size="large" name="heart" class="heart " color="tertiary" (click)="rimuoviPref()"></ion-icon>
+            <ion-icon *ngIf="!preferita" size="large" name="heart-empty" class="heart" color="tertiary" (click)="aggiungiPref()"></ion-icon>
+        </ion-col>
+      </ion-row>
+
+
+        </span>
+
+    <div>
+
+      <ion-slides pager="true">
+        <ion-slide>
+          <img src="data:{{ricetta.immagine.type}};base64,{{ricetta.immagine.data}}"/>
+        </ion-slide>
+        <ion-slide *ngFor="let img of ricetta.imgpreparazione">
+          <img src="data:{{img.type}};base64,{{img.data}}" />
+        </ion-slide>
+      </ion-slides>
+    </div>
+
+    <div>
+      <p color="tertiary">
+        <b> {{ 'TPREP' | translate }} </b> :
+          <ion-icon class="icona" size="medium" name="time"></ion-icon>
+          {{ricetta.tprep}}
+      </p>
+      <p>
+        <b> {{ 'CATEGORIA' | translate }} </b> :
+          {{ricetta.categoria.nome}}
+      </p>
+      <p>
+        <b>{{ 'DIFFICOLTA' | translate }} </b> :
+
+        <ion-icon color="secondary" name="star"></ion-icon>
+        <ion-icon color="secondary" [hidden]="(ricetta.difficolta<2)" name="star"></ion-icon>
+        <ion-icon color="secondary" [hidden]="(ricetta.difficolta<3)" name="star"></ion-icon>
+        <ion-icon color="secondary" [hidden]="(ricetta.difficolta<4)" name="star"></ion-icon>
+        <ion-icon color="secondary" [hidden]="(ricetta.difficolta<5)" name="star"></ion-icon>
+      </p>
+      <p >
+       <b> {{ 'NDOSI' | translate }} </b> :
+        <ion-icon class="icona" name="restaurant"></ion-icon>
+        {{ricetta.ndosi}}
+      </p>
+
+    </div>
+
+    <div>
+      <h6>
+        <b>
+          {{ 'INGREDIENTI' | translate }}
+        </b>
+      </h6>
+    </div>
+
+    <div>
+      <ul>
+        <li *ngFor="let i of ricetta.ingredienti">
+          {{i.qta}} {{i.cibo.um}} {{i.cibo.nome}}
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h6>
+        <b>
+          {{ 'PROCEDIMENTO' | translate }}
+        </b>
+      </h6>
+    </div>
+
+    <div>
+      <ion-text>
+        {{ricetta.procedimento}}
+      </ion-text>
+    </div>
+
+    <div margin-top="30px" align="center">
+
+      <ion-button size="medium" shape="round" color="tertiary" [routerLink]="['/commenta', ricetta.id]" tappable>
+
+        {{ 'COMMENTA-BUTTON' | translate }}
+      </ion-button>
+    </div>
+
+    <div>
+      <h6>
+        <b>
+          {{ 'COMMENTIRICETTA' | translate }}
+        </b>
+      </h6>
+    </div>
+
+    <div>
+      <div *ngIf="ricetta" class="ion-text-center">
+        <p *ngIf="ricetta.commenti.length == 0">
+          <ion-text color="medium">{{'NOCOMMENTI' | translate}}</ion-text>
+        </p>
+      </div>
+      <ion-list>
+
+        <div *ngFor="let commento of ricetta.commenti">
+          <ion-item *ngIf="commento.immagineutente && commento.username">
+            <ion-avatar slot="start">
+              <img src="data:{{commento.immagineutente.type}};base64,{{commento.immagineutente.data}}">
+            </ion-avatar>
+            <ion-label text-wrap>
+              <p>
+                <b>
+                  {{commento.username}}
+                </b>
+              </p>
+              <p>
+                {{commento.testo}}
+              </p>
+            </ion-label>
+
+            <span>
+          <ion-text slot="end" color="dark">
+              <p class="datacommento" text-end="true">{{commento.data}}<br> {{commento.ora}}</p>
+          </ion-text>
+        </span>
+          </ion-item>
+        </div>
+
+      </ion-list>
+    </div>
+
+
+
+
+  </div>
+
+</ion-content>

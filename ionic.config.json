@@ -1,0 +1,8 @@
+{
+  "name": "MyRecipes",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
+  "type": "angular"
+}

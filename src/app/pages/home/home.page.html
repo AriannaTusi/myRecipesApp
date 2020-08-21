@@ -1,0 +1,69 @@
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      refreshingSpinner="lines">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-toolbar>
+    <form [formGroup]="nomeForm">
+      <ion-searchbar  formControlName="nome" placeholder="{{ 'CERCA' | translate}}" (search)="onSubmitNome($event.target)"></ion-searchbar>
+    </form>
+  </ion-toolbar>
+
+  <div class="spin" *ngIf="!(ricetteslide$ | async) || !(ricettelista$ | async)">
+    <ion-spinner color="tertiary" name="lines"></ion-spinner>
+  </div>
+
+  <div *ngIf="(ricetteslide$ | async)">
+    <ion-slides pager="true">
+      <ion-slide  *ngFor="let slide of ricetteslide$ | async " [routerLink]="['/ricette', slide.id]" routerDirection="forward" >
+        <img class="immagineslide" src="data:{{slide.immagine.type}};base64,{{slide.immagine.data}}"/>
+        <ion-label class="img-description">{{slide.nome}}</ion-label>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+
+  <ion-list *ngIf="(ricettelista$ | async)">
+    <ion-item *ngFor="let recipe of ricettelista$ | async" [routerLink]="['/ricette', recipe.id]" routerDirection="forward">
+      <ion-thumbnail item-left>
+        <img src="data:{{recipe.immagine.type}};base64,{{recipe.immagine.data}}" />
+      </ion-thumbnail>
+      <ion-label text-wrap padding>
+        <h2 class="ion-label">{{recipe.nome}}</h2>
+      </ion-label>
+      <span>
+        <ion-label>
+          <p >
+
+            {{recipe.tprep}} <ion-icon class="icona" name="time"></ion-icon>
+          </p>
+        </ion-label>
+        <ion-label>
+          <p>
+            <ion-icon name="star"></ion-icon>
+            <ion-icon [hidden]="(recipe.difficolta<2)" name="star"></ion-icon>
+            <ion-icon [hidden]="(recipe.difficolta<3)" name="star"></ion-icon>
+            <ion-icon [hidden]="(recipe.difficolta<4)" name="star"></ion-icon>
+            <ion-icon [hidden]="(recipe.difficolta<5)" name="star"></ion-icon>
+
+          </p>
+        </ion-label>
+
+      </span>
+
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="ricerca()" color="tertiary">
+      <ion-icon name="search"></ion-icon>
+    </ion-fab-button>
+
+  </ion-fab>
+
+</ion-content>

@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="primary" text-center  mode="ios">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'SETTINGS-TITOLO' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form [formGroup]="settingForm">
+    <ion-list no-lines>
+      <ion-label>
+        <h6>
+          {{ 'CAMBIALINGUA' | translate }}
+        </h6>
+      </ion-label>
+
+      <ion-item>
+        <ion-label position="fixed">{{ 'LINGUA' | translate }}</ion-label>
+        <ion-select formControlName="linguaPreferita" okText="{{ 'SAVE_BUTTON' | translate }}" cancelText="{{ 'CANCEL_BUTTON' | translate }}">
+          <ion-select-option *ngFor="let lingua of lingue" [value]="lingua.valore">{{lingua.etichetta}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+    </ion-list>
+
+    <div margin-top="30px" align="center">
+      <ion-button icon-left size="medium" shape="round" color="tertiary" (click)="Submit()" [disabled]="!settingForm.valid" tappable>
+        {{ 'SAVE_BUTTON' | translate }}
+      </ion-button>
+      <ion-button icon-left size="medium" shape="round" color="tertiary" (click)="Cancel()" tappable>
+        {{ 'CANCEL_BUTTON' | translate }}
+      </ion-button>
+    </div>
+
+
+  </form>
+
+</ion-content>
+
+<ion-text text-center>
+  <p>
+    © All rights reserved
+  </p>
+</ion-text>
